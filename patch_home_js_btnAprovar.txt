@@ -1,0 +1,37 @@
+alert("Aprovar fornecedor: " + item.razao_social);
+});
+=======
+btnAprovar.on('click', function() {
+    var cotacaoId = $('#cotacaoSelect').val();
+    var fornecedorId = item.fornecedor_id;
+
+    if (!cotacaoId || !fornecedorId) {
+        alert('Cotação ou fornecedor inválido.');
+        return;
+    }
+
+    if (!confirm('Confirma a aprovação da cotação para o fornecedor ' + item.razao_social + '?')) {
+        return;
+    }
+
+    $.ajax({
+        url: '/cotacao/aprovar',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            cotacao_id: cotacaoId,
+            fornecedor_id: fornecedorId,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            alert(response.message);
+            if (response.success) {
+                // Optionally reload or update the UI
+                $('#cotacaoSelect').trigger('change');
+            }
+        },
+        error: function(xhr) {
+            alert('Erro ao aprovar cotação: ' + xhr.responseText);
+        }
+    });
+});

@@ -1,0 +1,121 @@
+<option value="">Selecione o produto</option>
+  @foreach($produtos as $produto)
+    <option value="{{ $produto->id }}">{{ $produto->name }}</option>
+  @endforeach
+</select>
+=======
+<select class="form-control select2" id="product_id" name="product_id" required>
+  <option value="" disabled selected>Choose a product</option>
+  @foreach($produtos as $produto)
+    <option value="{{ $produto->id }}">{{ $produto->name }}</option>
+  @endforeach
+</select>
+>>>>>>> REPLACE
+
+<<<<<<< SEARCH
+<select class="form-control" id="marca_id" name="marca_id" required>
+  <option value="">Selecione a marca</option>
+</select>
+=======
+<select class="form-control select2" id="marca_id" name="marca_id" required>
+  <option value="" disabled selected>Choose a brand</option>
+</select>
+>>>>>>> REPLACE
+
+<<<<<<< SEARCH
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const productSelect = document.getElementById('product_id');
+    const marcaSelect = document.getElementById('marca_id');
+
+    productSelect.addEventListener('change', function () {
+      const produtoId = this.value;
+
+      // Clear marca options
+      marcaSelect.innerHTML = '<option value="">Carregando...</option>';
+
+      if (produtoId) {
+        $.ajax({
+          type: 'POST',
+          url: 'marcas-produto',
+          data: { id_produto: produtoId },
+          headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+          },
+          success: function (response) {
+            marcaSelect.innerHTML = '<option value="">Selecione a marca</option>';
+            $.each(response, function (index, item) {
+              marcaSelect.innerHTML += '<option value="' + item.id + '">' + item.nome + '</option>';
+            });
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            for (i in XMLHttpRequest) {
+              if (i != "channel")
+                console.log(i + " : " + XMLHttpRequest[i]);
+            }
+          },
+        });
+      }
+    });
+  });
+</script>
+=======
+</div>
+
+<!-- Include Select2 CSS and JS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Initialize Select2 on product and marca selects
+    $('#product_id').select2({
+      placeholder: "Choose a product",
+      allowClear: true,
+      width: '100%'
+    });
+    $('#marca_id').select2({
+      placeholder: "Choose a brand",
+      allowClear: true,
+      width: '100%'
+    });
+
+    const productSelect = document.getElementById('product_id');
+    const marcaSelect = document.getElementById('marca_id');
+
+    productSelect.addEventListener('change', function () {
+      const produtoId = this.value;
+
+      // Clear marca options and reset Select2
+      $('#marca_id').empty().trigger('change');
+      $('#marca_id').append(new Option('Carregando...', '', false, false)).trigger('change');
+
+      if (produtoId) {
+        $.ajax({
+          type: 'POST',
+          url: 'marcas-produto',
+          data: { id_produto: produtoId },
+          headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+          },
+          success: function (response) {
+            $('#marca_id').empty().trigger('change');
+            $('#marca_id').append(new Option('Choose a brand', '', false, false)).trigger('change');
+            $.each(response, function (index, item) {
+              var option = new Option(item.nome, item.id, false, false);
+              $('#marca_id').append(option).trigger('change');
+            });
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            for (i in XMLHttpRequest) {
+              if (i != "channel")
+                console.log(i + " : " + XMLHttpRequest[i]);
+            }
+          },
+        });
+      }
+    });
+  });
+</script>

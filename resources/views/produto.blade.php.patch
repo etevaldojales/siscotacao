@@ -1,0 +1,114 @@
+<label for="user_id">Usuário <span style="color: red;">*</span></label>
+            <input type="hidden" id="user_id" name="user_id" value="{{ auth()->id() }}">
+            <input type="text" class="form-control" value="{{ auth()->user()->name }}" readonly>
+        </div>
+=======
+        <div class="form-group">
+            <label for="user_id">Usuário <span style="color: red;">*</span></label>
+            <input type="hidden" id="user_id" name="user_id" value="{{ auth()->id() }}">
+            <input type="text" class="form-control" value="{{ auth()->user()->name }}" readonly>
+        </div>
+
+        <!-- New CNPJ input field for loading comprador -->
+        <div class="form-group">
+            <label for="cnpj_comprador">Buscar Comprador por CNPJ</label>
+            <input type="text" class="form-control" id="cnpj_comprador" name="cnpj_comprador" placeholder="Digite o CNPJ do comprador">
+            <small id="cnpjHelp" class="form-text text-muted">Digite o CNPJ e pressione Enter para buscar o comprador.</small>
+            <div id="cnpjError" class="text-danger mt-1" style="display:none;">Comprador não encontrado para o CNPJ informado.</div>
+        </div>
+>>>>>>> REPLACE
+
+<<<<<<< SEARCH
+        // Edit button click handler
+        $(document).on('click', '.btn-edit', function () {
+            var button = $(this);
+            editMode = true;
+            editProductId = button.data('id');
+
+            $("#codigo").val(button.data('codigo'));
+            $("#name").val(button.data('name'));
+            $("#description").val(button.data('description'));
+            //$("#price").val(button.data('price').toString().replace('.', ','));
+            $("#stock").val(button.data('stock'));
+            $("#status").val(button.data('status'));
+            $("#user_id").val(button.data('user_id'));
+            $("#category_id").val(button.data('category_id'));
+
+            // Populate compradores select
+            var compradores = button.data('compradores');
+            if (compradores) {
+                var compradoresArray = compradores.toString().split(',');
+                $('#compradores').val(compradoresArray);
+            } else {
+                $('#compradores').val([]);
+            }
+
+            $("#btnsalva").text('Atualizar');
+        });
+=======
+        // Edit button click handler
+        $(document).on('click', '.btn-edit', function () {
+            var button = $(this);
+            editMode = true;
+            editProductId = button.data('id');
+
+            $("#codigo").val(button.data('codigo'));
+            $("#name").val(button.data('name'));
+            $("#description").val(button.data('description'));
+            //$("#price").val(button.data('price').toString().replace('.', ','));
+            $("#stock").val(button.data('stock'));
+            $("#status").val(button.data('status'));
+            $("#user_id").val(button.data('user_id'));
+            $("#category_id").val(button.data('category_id'));
+
+            // Populate compradores select
+            var compradores = button.data('compradores');
+            if (compradores) {
+                var compradoresArray = compradores.toString().split(',');
+                $('#compradores').val(compradoresArray);
+            } else {
+                $('#compradores').val([]);
+            }
+
+            $("#btnsalva").text('Atualizar');
+        });
+
+        // New JS for loading comprador by CNPJ
+        $('#cnpj_comprador').on('keypress', function (e) {
+            if (e.which == 13) { // Enter key pressed
+                e.preventDefault();
+                var cnpj = $(this).val().replace(/\D/g, '');
+                if (cnpj.length === 14) {
+                    $('#cnpjError').hide();
+                    $.ajax({
+                        url: "{{ route('check.cnpj') }}",
+                        type: 'POST',
+                        data: {
+                            cnpj: cnpj,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (response) {
+                            if (response && response.user) {
+                                var userId = response.user.id;
+                                var userName = response.user.name;
+                                // Select the comprador in the compradores select
+                                var compradoresSelect = $('#compradores');
+                                compradoresSelect.val([userId]);
+                                compradoresSelect.trigger('change');
+                                $('#cnpjError').hide();
+                            } else {
+                                $('#compradores').val([]);
+                                $('#cnpjError').show();
+                            }
+                        },
+                        error: function () {
+                            $('#compradores').val([]);
+                            $('#cnpjError').show();
+                        }
+                    });
+                } else {
+                    $('#compradores').val([]);
+                    $('#cnpjError').show();
+                }
+            }
+        });

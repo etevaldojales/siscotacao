@@ -1,0 +1,71 @@
+$("#cep").on("blur", function () {
+        var cep = $(this).val().replace(/\D/g, "");
+        if (cep.length === 8) {
+            $.ajax({
+                url: "https://viacep.com.br/ws/" + cep + "/json/",
+                dataType: "json",
+                success: function (data) {
+                    if (!("erro" in data)) {
+                        $("#logradouro").val(data.logradouro);
+                        $("#bairro").val(data.bairro);
+                        $("#cidade").val(data.localidade);
+                        $("#estado").val(data.uf);
+                        $("#numero").focus();
+                    } else {
+                        alert("CEP não encontrado.");
+                        $("#logradouro").val("");
+                        $("#bairro").val("");
+                        $("#cidade").val("");
+                        $("#estado").val("");
+                    }
+                },
+                error: function () {
+                    alert("Erro ao consultar o CEP.");
+                },
+            });
+        } else {
+            alert("Formato de CEP inválido.");
+            $("#logradouro").val("");
+            $("#bairro").val("");
+            $("#cidade").val("");
+            $("#estado").val("");
+        }
+    });
+=======
+    $("#cep").on("blur", function () {
+        var cep = $(this).val().replace(/\D/g, "");
+        if (cep.length === 8) {
+            $.ajax({
+                url: "https://viacep.com.br/ws/" + cep + "/json/",
+                dataType: "json",
+                success: function (data) {
+                    if (!("erro" in data)) {
+                        $("#logradouro").val(data.logradouro);
+                        $("#bairro").val(data.bairro);
+                        $("#cidade").val(data.localidade);
+                        $("#estado").val(data.uf);
+                        $("#numero").focus();
+                    } else {
+                        alert("CEP não encontrado.");
+                        $("#logradouro").val("");
+                        $("#bairro").val("");
+                        $("#cidade").val("");
+                        $("#estado").val("");
+                    }
+                },
+                error: function () {
+                    alert("Erro ao consultar o CEP.");
+                },
+            });
+        } else {
+            alert("Formato de CEP inválido.");
+            $("#logradouro").val("");
+            $("#bairro").val("");
+            $("#cidade").val("");
+            $("#estado").val("");
+        }
+    });
+
+    // Add CNPJ mask to inputs
+    $("#cnpj").mask("00.000.000/0000-00");
+    $("#cnpj_matriz").mask("00.000.000/0000-00");

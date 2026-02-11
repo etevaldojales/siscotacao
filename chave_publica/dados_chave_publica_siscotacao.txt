@@ -1,0 +1,13 @@
+var formData = new FormData($('#frmempresa')[0]);
+
+053.735.223-68
+
+Agencia: 2812-6
+Conta: 74990-7
+
+
+https://abastecejacompras.com.br/siscotacao/public/admin/categoria
+
+Senha chave publica siscotacao
+1b1st2c2j1@
+SHA256:17uG2ZXc34lngsyuD1DB3n0tgP14SKuV+qCOrK+4a4U
